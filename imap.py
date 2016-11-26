@@ -1,44 +1,52 @@
 import imaplib
 import email
 
-def create_client(username, password):
-    mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login('devremoterm@gmail.com', 'termmyremote')
-    mail.select('inbox')
-    return mail
-
-
-class GmailSender:
+class GmailGetter:
 
     def __init__(self, login, password):
         self.client = create_client(login, password)
-    
-    def fetch_new(self):
         result, data = self.client.search(None, 'ALL')
-  
+        self.current_size = (len(data[0]) + 1) / 2
 
-mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    def check_new(self):
+        self.client.select('inbox')
+        result, data = self.client.search(None, 'ALL')
+        new_size = (len(data[0]) + 1) / 2
 
-mail.login('devremoterm@gmail.com', 'termmyremote')
-mail.select('inbox')
+        if new_size > self.current_size:
+            self.current_size = new_size
+            return True
+        elif new_size < self.current_size:
+            self.current_size = new_size
+            return False
+        else:
+            return False
 
-result, data = mail.search(None, 'ALL')
+    def get_new(self):
+        typ, message = self.client.fetch(str(int(self.current_size)), '(RFC822)')
+        message = message[0][1]
+        message = message.decode(encoding='UTF-8')
 
-for num in data[0].split():
-    typ, message = mail.fetch(num, '(RFC822)')
+        email_body = email.message_from_string(message)
 
-    message = message[0][1]
-    message = message.decode(encoding='UTF-8')
+        from_field = email_body.get('From')
+        delimiter1 = from_field.find('<')
+        delimiter2 = from_field.find('>')
+        sender = from_field[delimiter1:delimiter2]
 
-    email_object = email.message_from_string(message)
+        subject = email_body.get('Subject')
 
-    print(num)
-    if email_object.is_multipart():
-        # for payload in email_object.get_payload():
-        #     print(payload.get_payload())
-        print(email_object.get_payload()[0].get_payload())
-    else:
-        print(email_object.get_payload())
+        if email_body.is_multipart():
+            body = email_body.get_payload()[0].get_payload()
+        else:
+            body = email_body.get_payload()
 
-mail.close()
-mail.logout()
+        return {'sender' : sender, 'subject' : subject, 'body' : body}
+
+def create_client(username, password):
+    mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login(username, password)
+    mail.select('inbox')
+
+    return mail
+
