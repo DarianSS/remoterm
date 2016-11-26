@@ -3,7 +3,7 @@ import email
 
 mail = imaplib.IMAP4_SSL('imap.gmail.com')
 
-mail.login('devremoterm@gmail.com','termmyremote')
+mail.login('devremoterm@gmail.com', 'termmyremote')
 mail.select('inbox')
 
 result, data = mail.search(None, 'ALL')
@@ -23,3 +23,6 @@ for num in data[0].split():
         print(email_object.get_payload()[0].get_payload())
     else:
         print(email_object.get_payload())
+
+mail.close()
+mail.logout()
