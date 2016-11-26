@@ -13,18 +13,23 @@ shell = subprocess.Popen('/bin/bash', bufsize=0, stdin=subprocess.PIPE, stdout=s
 
 while True:
 
-    command = input("Enter command")
+    command = input("Enter command: \n")
 
     input1 = str.encode(command +'; echo "<>< end"' + '\n')
     shell.stdin.write(input1)
     print('going to sleep')
     time.sleep(1)
     print('waking')
+    
+    outputString = ""
     for line in shell.stdout:
         if line == b'<>< end\n':
             break
-        print('printing line')
-        print(line)
+##        print('printing line')
+        outputString+=line.decode("utf-8")
+##        print(line.decode("utf-8"))
+
+    print(outputString)    
     
 #    proc = subprocess.Popen(command6, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 #    print("chckpoint")
