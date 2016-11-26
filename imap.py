@@ -1,6 +1,22 @@
 import imaplib
 import email
 
+def create_client(username, password):
+    mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login('devremoterm@gmail.com', 'termmyremote')
+    mail.select('inbox')
+    return mail
+
+
+class GmailSender:
+
+    def __init__(self, login, password):
+        self.client = create_client(login, password)
+    
+    def fetch_new(self):
+        result, data = self.client.search(None, 'ALL')
+  
+
 mail = imaplib.IMAP4_SSL('imap.gmail.com')
 
 mail.login('devremoterm@gmail.com', 'termmyremote')
