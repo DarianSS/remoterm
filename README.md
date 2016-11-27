@@ -2,6 +2,8 @@
 
 ## Full unattended and unrestricted access to your computer
 
+In a nutshell, remoTerm is a daemon that runs on our home computer. It listens for emails or text messages that we send to it, executes the commands that are in them, and replies with the terminal output. It is platform agnostic, meaning that it does not need an app on the commanding device, just a mail or messaging client.
+
 ### Configuration
 
 config.py:
@@ -17,5 +19,6 @@ config.py:
 ### Limitations
 
 * The phone number can only be changed by pointing your phone number's Twilio dashboard to the machine's address. Alternatively ngrok can be used to tunnel the localhost.
-* Configuration has no GUI.
+* No GUI for configuration.
+* State is not preserved across quries. (i.e. cd followed by ls will return the contents of the current directory; use && instead)
 
