@@ -1,2 +1,4 @@
 EMAIL = 'devremoterm@gmail.com'
-PASSWORD = 'termmyterm'
+EMAIL_PASSWORD = 'termmyterm'
+
+APP_PASSWORD = 'test'

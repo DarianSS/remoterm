@@ -6,12 +6,14 @@ class GmailGetter:
     def __init__(self, login, password):
         self.client = create_client(login, password)
         result, data = self.client.search(None, 'ALL')
-        self.current_size = (len(data[0]) + 1) / 2
+        emails = data[0].split()
+        self.current_size = emails[-1]
 
     def check_new(self):
         self.client.select('inbox')
         result, data = self.client.search(None, 'ALL')
-        new_size = (len(data[0]) + 1) / 2
+        emails = data[0].split()
+        new_size = emails[-1]
 
         if new_size > self.current_size:
             self.current_size = new_size
@@ -50,3 +52,5 @@ def create_client(username, password):
 
     return mail
 
+# g = GmailGetter('devremoterm@gmail.com' , 'termmyremote')
+# g.check_new()
