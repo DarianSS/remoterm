@@ -32,9 +32,9 @@ class GmailGetter:
         email_body = email.message_from_string(message)
 
         from_field = email_body.get('From')
-        delimiter1 = from_field.find('<')
-        delimiter2 = from_field.find('>')
-        sender = from_field[delimiter1:delimiter2]
+        index1 = from_field.find('<')
+        index2 = from_field.find('>')
+        sender = from_field[index1+1:index2]
 
         subject = email_body.get('Subject')
 
