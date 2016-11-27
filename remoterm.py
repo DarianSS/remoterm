@@ -17,16 +17,13 @@ g_receiver = imap.GmailGetter(config.EMAIL, config.EMAIL_PASSWORD)
 
 while (True):
     if (g_receiver.check_new()):
-        print('NEW EMAIL')
         email = g_receiver.get_new()
 
         to = email['sender']
         subject = 'Re: ' + email['subject']
         password, command = parse_email(email['body'])
-        print(command, len(command))
 
         if password == config.APP_PASSWORD:
-            print('PASSWORD MATCH')
 
             shell = IO.ShellManager('/bin/bash')
             output = shell.getOutput(command)
