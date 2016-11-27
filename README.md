@@ -20,5 +20,5 @@ config.py:
 
 * The phone number can only be changed by pointing your phone number's Twilio dashboard to the machine's address. Alternatively ngrok can be used to tunnel the localhost.
 * No GUI for configuration.
-* State is not preserved across quries. (i.e. cd followed by ls will return the contents of the current directory; use && instead)
+* State is not preserved across queries. (i.e. cd followed by ls will return the contents of the current directory; use && instead)
 
